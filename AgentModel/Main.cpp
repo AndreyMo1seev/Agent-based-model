@@ -13,9 +13,10 @@
 //#include "../matplotlib-cpp-master/matplotlibcpp.h"
 #define COEFF_OF_INFESTATIONS 103
 #define NUMBER_OF_SOCIAL_CONNECTIONS 31
-#define DURATION 90
-#define SELF_ISOLATION_INGEX 92
-#define TEST_PROBABILITY 95
+#define DURATION 110
+#define ISOLATION_INGEX 92
+#define SELF_ISOLATION_INGEX 50
+#define TEST_PROBABILITY 92
 #define START_TESTS 25
 
 using namespace std;
@@ -320,7 +321,24 @@ void SimulateInfection(vector<Agent> agents, const int nubmerOfAgents)
 	vector<int> listofTests;
 	vector<int> days;
 	int nsc = NUMBER_OF_SOCIAL_CONNECTIONS;
-	
+
+	//vector<int> tmp;
+	//for (int i = 0; i < 200; i++)
+	//{
+	//	std::mt19937 socialGroup1(chrono::steady_clock::now().time_since_epoch().count());
+	//	std::uniform_int_distribution<> makeselfisolation(0, 100);
+	//	int selfisolateprob = makeselfisolation(socialGroup1);
+	//	tmp.push_back(selfisolateprob);
+	//}
+	//int c = 0;
+	//for (int i = 0; i < 200; i++)
+	//{
+	//	if (tmp[i] < 50) {
+	//		c++;
+	//	}
+	//	//cout << tmp[i] << endl;
+	//}
+	//cout << "< 50: " << c << endl;
 	for (int i = 0; i < DURATION; i++)
 	{
 		cout << "Day" << i << endl;
@@ -336,6 +354,7 @@ void SimulateInfection(vector<Agent> agents, const int nubmerOfAgents)
 			}
 
 		}
+		
 
 		for (auto& a : agents)
 		{
@@ -353,6 +372,13 @@ void SimulateInfection(vector<Agent> agents, const int nubmerOfAgents)
 				tests++;
 			}
 			*/
+			std::mt19937 socialGroup1(chrono::steady_clock::now().time_since_epoch().count());
+			std::uniform_int_distribution<> makeselfisolation(0, 1000);
+			int selfisolateprob = makeselfisolation(socialGroup1);
+			if (selfisolateprob < 2)
+			{
+				a.SetIsolation();
+			}
 			if (a.IsInfected())
 			{
 				std::mt19937 socialGroup(chrono::steady_clock::now().time_since_epoch().count());
@@ -399,7 +425,7 @@ void SimulateInfection(vector<Agent> agents, const int nubmerOfAgents)
 					
 					std::uniform_int_distribution<> selfIsolationIndex(0, 100);
 					int index = selfIsolationIndex(socialGroup);
-					if (index <= SELF_ISOLATION_INGEX)
+					if (index <= ISOLATION_INGEX)
 					{
 						a.SetIsolation();
 					}
