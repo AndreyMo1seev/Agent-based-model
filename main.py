@@ -19,6 +19,7 @@ def summary_plot(data, yandex_sick, yandex_deaths):
     c = data.values[2]
     e = data.values[3]
     ys = yandex_sick[:len(a)]
+    ys_ff = yandex_sick[2:len(a) + 2]
     yd = yandex_deaths[:len(a)]
     plt.plot(a, e, label='смоделированное число умерших за все время')
     plt.plot(a, yd, label='данные статистики')
@@ -27,6 +28,7 @@ def summary_plot(data, yandex_sick, yandex_deaths):
     plt.legend()
     plt.show()
     plt.plot(a, b, label='смоделированное число заболевших за все время')
+    plt.plot(a, [s*1.09 for s in ys], label='выявленное число заболевших за все время')
     plt.plot(a, ys, label='данные статистики')
     plt.xlabel('дни')
     plt.ylabel('число заболевших')
@@ -39,11 +41,13 @@ def plot_per_day(data, yandex_sick, yandex_deaths):
     b = data.values[1]
     c = data.values[2]
     e = data.values[3]
+    f = data.values[5]
     ys = yandex_sick[:len(a)]
     yd = yandex_deaths[:len(a)]
     c_pd = per_day(c)
     b_pd = per_day(b)
     e_pd = per_day(e)
+    f_pd = per_day(f)
     ys_pd = per_day(ys)
     yd_pd = per_day(yd)
     # deaths_pd = per_day(deaths)
@@ -55,6 +59,7 @@ def plot_per_day(data, yandex_sick, yandex_deaths):
     plt.show()
     plt.plot(a, b_pd, label='смоделированное число заразившихся за сутки')
     plt.plot(a, ys_pd, label='данные статистики')
+    plt.plot(a, f_pd, label='Выявленное число заболевших в модели')
     plt.xlabel('дни')
     plt.ylabel('число заболевших')
     plt.legend()
